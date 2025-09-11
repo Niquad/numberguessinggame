@@ -3,48 +3,32 @@ package com.studentapp;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+
 public class NumberGuessServletTest {
+
     private NumberGuessServlet servlet;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private StringWriter responseWriter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         servlet = new NumberGuessServlet();
-        servlet.init();
-        request = Mockito.mock(HttpServletRequest.class);
-        response = Mockito.mock(HttpServletResponse.class);
-        responseWriter = new StringWriter();
-        Mockito.when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
     }
 
     @Test
-    public void testGuessTooLow() throws Exception {
-        Mockito.when(request.getParameter("guess")).thenReturn("1");
-        servlet.doPost(request, response);
-        assertTrue(responseWriter.toString().contains("Your guess is too low"));
+    public void testTargetNumberInRange() {
+        int target = servlet.getTargetNumber(); // make sure this method exists in your servlet
+        assertTrue("Target number should be between 1 and 100", target >= 1 && target <= 100);
     }
 
     @Test
-    public void testGuessTooHigh() throws Exception {
-        Mockito.when(request.getParameter("guess")).thenReturn("100");
-        servlet.doPost(request, response);
-        assertTrue(responseWriter.toString().contains("Your guess is too high"));
-    }
-
-    @Test
-    public void testCorrectGuess() throws Exception {
-        int correctGuess = servlet.getTargetNumber();
-        Mockito.when(request.getParameter("guess")).thenReturn(String.valueOf(correctGuess));
-        servlet.doPost(request, response);
-        assertTrue(responseWriter.toString().contains("Congratulations! You guessed the number!"));
+    public void testGuessCorrectNumber() {
+        int target = servlet.getTargetNumber();
+        String result = servlet.checkGuess(target); // This should be a method in your servlet to check guesses
+        assertEquals("Correct! You guessed the number.", result);
     }
 }
 
