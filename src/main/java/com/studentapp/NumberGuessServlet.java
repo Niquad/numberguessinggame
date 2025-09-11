@@ -51,6 +51,20 @@ public class NumberGuessServlet extends HttpServlet {
             out.print("Too high!");
         }
     }
+   
+public String checkGuess(int guess) {
+    if (guess == targetNumber) {
+        return "Correct! You guessed the number.";
+    } else if (guess < targetNumber) {
+        return "Too low!";
+    } else {
+        return "Too high!";
+    }
+}
+public int getTargetNumber() {
+    return (int) (Math.random() * 100) + 1; // generates 1 - 100
+}
+
 }
 
 
